@@ -50,8 +50,8 @@
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Type: " Style="{StaticResource PropTextBlock}"></TextBlock>
                         <ComboBox x:Name="cmbType" Grid.Row="2" Grid.Column="1" DisplayMemberPath="Name" SelectedValuePath="ID"></ComboBox>
                     </Grid>
-                    <Button x:Name="btnAdd" Content="Add" Style="{StaticResource exButton}"/>
-                    <Button x:Name="btnClear" Content="Clear" Style="{StaticResource exButton}"/>
+                    <Button x:Name="btnAdd" Content="Add" Style="{StaticResource exButton}" Command="{Binding AddCommand}" CommandParameter="para1"/>
+                    <Button x:Name="btnClear" Content="Clear" Style="{StaticResource exButton}" Command="{Binding ClearCommand}"/>
                 </StackPanel>
             </Grid>
         </Border>
