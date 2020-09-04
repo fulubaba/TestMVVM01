@@ -15,10 +15,50 @@
     </Window.DataContext>
 
     <Window.Resources>
+        <DataTemplate x:Key="DefectListItemDataTemplate">
+            <StackPanel x:Name="spDefectListItem" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <CheckBox x:Name="cbIsVisible" Margin="5,0,5,0" VerticalAlignment="Center" 
+                      Click="CbIsVisible_Click"/>
+                <Image x:Name="imgDefectTypeIcon" VerticalAlignment="Center" 
+                   Width="{Binding IconWidth}" Height="{Binding IconHeight}" Source="{Binding IconSource}"/>
+                <Button x:Name="btnDefectName" MinWidth="60" FontSize="14" Margin="5,0,5,0" BorderThickness="0"
+                        HorizontalContentAlignment="Left" VerticalAlignment="Center" Background="Transparent"
+                        Content="{Binding DefectName}" Foreground="{Binding DefectColor}" Click="BtnDefectName_Click"/>
+                <TextBox x:Name="tbDefectNum" FontSize="13" Foreground="LightGray" 
+                         VerticalAlignment="Center" Background="Transparent" BorderThickness="0"
+                        Text="{Binding DefectNum}"/>
+            </StackPanel>
+        </DataTemplate>
         <Style x:Key="FormBorderStyle" TargetType="Border">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="Red" />
             <Setter Property="Background" Value="#202122" />
+        </Style>
+        <Style x:Key="TTTTTTTT" TargetType="ItemsControl">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate DataType="vm:MyItemViewModel">
+                        <Border Width="120" Height="30" Background="Red">
+                            <TextBlock Text="{Binding Name}" />
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -31,19 +71,7 @@
         <Border Grid.Column="0" Style="{StaticResource FormBorderStyle}">
             <!--缺陷列表-->
             <Grid x:Name="SubGridDefectList">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Button Grid.Row="0" Command="{Binding HiButtonCommand}" 
-                        CommandParameter="Hi" Content="{Binding HiButtonContent}"
-                        Width="100"
-                        Height="25"/>
-
-                <Button Grid.Row="1" Content="Toggle Can Click" 
-                        Command="{Binding ToggleExecuteCommand}"  Width="100" Height="25"/>
-                <StackPanel Grid.Row="2" x:Name="DefectList" Orientation="Vertical">
+                <StackPanel x:Name="spMainDefectList" Orientation="Vertical">
                     <StackPanel x:Name="spTitle" Margin="8,15,0,5" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <TextBlock Text="Defect List: " FontSize="15" Foreground="LightGray" Margin="5,0,0,0"/>
                     </StackPanel>
@@ -52,7 +80,13 @@
                         <TextBlock Text="Select All" FontSize="15" Foreground="LightGray" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel x:Name="spDefectList" Margin="10,5,0,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <uc:DefectListItem></uc:DefectListItem>
+                        <ItemsControl x:Name="icDefectList" ItemTemplate="{StaticResource DefectListItemDataTemplate}" ItemsSource="{Binding DefectList}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
                     </StackPanel>
                 </StackPanel>
             </Grid>
